@@ -13,3 +13,44 @@ Explanation: Buy on day 2 (price = 1) and sell on day 3 (price = 5), profit = 5-
 
 
 //--------------------Solution 1------------------------//
+var maxProfit = function(prices) {
+    let min=null;
+    let max=null;
+    let isUp = false;
+    let profit = 0;
+
+    for (let i = 0; i < prices.length; ++i) {
+        let item = prices[i]
+        if (min===null || max===null){
+            min = item;
+            max = item;
+            continue;
+        }
+
+        if (isUp){
+            // buy and sell
+            if (item<max){
+                profit += max - min;
+                isUp = false;
+                max = item;
+                min = item;
+            } else {
+                max = item;
+            }
+        } else { // looking for the minimum
+            if (item>max){
+                max = item;
+                isUp = true
+            } else {
+                min = item;
+                max = item;
+            }
+        }
+    }
+    if (isUp && max>min){
+        profit+=max-min;
+    }
+    return profit;
+
+
+};
