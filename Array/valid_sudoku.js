@@ -23,3 +23,50 @@ Input:
   [".",".",".",".","8",".",".","7","9"]
 ]
 Output: true
+
+/// ---------------- Solution 1 ------------------///
+
+const isValidSudoku = board => {
+  const isValid = createValidator();
+
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (!isValid(i, j, board[i][j])) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+};
+
+const createValidator = () => {
+  const horizontal = Array.from(Array(9), () => new Set());
+  const vertical = Array.from(Array(9), () => new Set());
+  const boxes = Array.from(Array(9), () => new Set());
+
+  return (row, col, value) => {
+    if (value === '.') {
+      return true;
+    }
+
+    if (horizontal[row].has(value)) {
+      return false;
+    }
+
+    if (vertical[col].has(value)) {
+      return false;
+    }
+
+    const box = Math.floor(row / 3) * 3 + Math.floor(col / 3);
+    if (boxes[box].has(value)) {
+      return false;
+    }
+
+    horizontal[row].add(value);
+    vertical[col].add(value);
+    boxes[box].add(value);
+
+    return true;
+  };
+};
